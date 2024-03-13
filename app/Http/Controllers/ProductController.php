@@ -12,15 +12,14 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     // public function __construct()  {
-    //       $this->middleware('auth');
-    //     //   ->except(['index','show']);
+        //   $this->middleware('auth')->except(['index','show']);
     // }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::with('category:id,name')->get();
+        $products = Product::all();
         $count = Product::all()->countBy('id');
         return response()->json([
             'products'=>$products,

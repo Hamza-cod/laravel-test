@@ -21,7 +21,7 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
-Route::resource('product',ProductController::class)->middleware('auth');
+Route::resource('product',ProductController::class);
 Route::resource('category',CategoryController::class);
 
- require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';

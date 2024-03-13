@@ -25,7 +25,7 @@ class UpdateProductRequest extends FormRequest
          'name'=>'required',
             'price'=>'required|numeric|min:1',
             'description'=>'required',
-            'image' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'image',
             'category_id' => '',
         ];
     }
