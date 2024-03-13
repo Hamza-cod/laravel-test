@@ -20,8 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
+Route::resource('product', ProductController::class)->only(['show', 'index']);
+Route::resource('category', CategoryController::class)->only(['show', 'index']);
 
-Route::resource('product',ProductController::class)->middleware('auth');
-Route::resource('category',CategoryController::class);
+Route::group(['middleware' => ["auth:sanctum"]],function ()  {
+    Route::resource('product',ProductController::class)->except(['show', 'index']);
+    Route::resource('category',CategoryController::class)->except(['show', 'index']);
+});
+
 
  require __DIR__.'/auth.php';

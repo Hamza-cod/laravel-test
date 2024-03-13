@@ -37,7 +37,7 @@ class ProductController extends Controller
         $formField['image'] = $request->file('image')->store('/images','public');
 
         Product::create($formField);
-      
+
         return response()->json([
             'status'=> 1
         ]);
@@ -47,7 +47,7 @@ class ProductController extends Controller
      * Display the specified resource.
      */
     public function show(Product $product)
-    {  
+    {
          $productWithCategory = $product->load('category:id,name');
 
     return response()->json([
@@ -62,21 +62,20 @@ class ProductController extends Controller
 {
     // Validate the request data
       $validatedData = $request->validated();
-    //  dd($request->validated());
-    // Check if a new image is provided and update it
-    
-    // dd('mm');
+
+    //!! Check if a new image is provided and update it
+
     if ($request->image!== null) {
-        // $image =$request->file('image');
-        // dd($image);
-        // $validatedData['image'] .= $image->store('/images', 'public');
-        // Delete the old image if necessary
+        $image =$request->file('image');
+
+        $validatedData['image'] .= $image->store('/images', 'public');
+     //?   Delete the old image if necessary
     }
 
-    // Update the product with the validated form fields
+    //**  Update the product with the validated form fields
     $product->update($validatedData);
 
-    // Optionally, reload the product with the category relationship to include it in the response
+    //**  Optionally, reload the product with the category relationship to include it in the response
     // $productWithCategory = $product->load('category:id,name');
 
     return response()->json([
