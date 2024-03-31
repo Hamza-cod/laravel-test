@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
 
-    // public function __construct(){
-    //     $this->middleware('auth')->except(['index']);
-    // }
+    public function __construct(){
+        $this->middleware('auth')->except(['index','show']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -44,7 +44,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return response()->json($category);
     }
 
    
@@ -54,7 +54,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $validated = $request->validate([
+             'name'=>'unique:categories|required|min:4'
+        ]);
+        $category->update($validated);
+        return response()->json([
+            'status'=>1
+        ]);
     }
 
     /**
@@ -62,6 +68,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return response()->json([
+            'message'=>'category deleted secssefully'
+        ]);
     }
 }

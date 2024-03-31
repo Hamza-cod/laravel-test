@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    // public function __construct()  {
-        //   $this->middleware('auth')->except(['index','show']);
-    // }
+    public function __construct()  {
+          $this->middleware('auth')->except(['index','show']);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('category:id,name')->get();
         $count = Product::all()->countBy('id');
         return response()->json([
             'products'=>$products,
@@ -60,6 +60,7 @@ class ProductController extends Controller
    public function update(UpdateProductRequest $request, Product $product)
 {
     // Validate the request data
+    // dd($request);
       $validatedData = $request->validated();
 
     //!! Check if a new image is provided and update it
@@ -67,18 +68,18 @@ class ProductController extends Controller
     if ($request->image!== null) {
         $image =$request->file('image');
 
-        $validatedData['image'] .= $image->store('/images', 'public');
+        $validatedData['image'] = $image->store('/images', 'public');
      //?   Delete the old image if necessary
     }
 
     //**  Update the product with the validated form fields
     $product->update($validatedData);
 
-    //**  Optionally, reload the product with the category relationship to include it in the response
+    // **  Optionally, reload the product with the category relationship to include it in the response
     // $productWithCategory = $product->load('category:id,name');
 
     return response()->json([
-        'status' => $request->image ,
+        'status' => 'ok' ,
     ]);
 }
 
